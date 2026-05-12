@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courses</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: lightblue; color: #0f172a; }
+    .container { max-width: 1000px; margin: 28px auto; padding: 0 20px; }
+    h1 { color:black; margin-bottom: 14px; }
+    .courses { display: grid; gap: 14px; }
+    .course-link { text-decoration: none; color: inherit; }
+    .course { display: flex; justify-content: space-between; align-items: center; padding: 14px; border-radius: 8px; background: white; border: 1px solid black; box-shadow: 0 2px 6px rgba(15, 23, 42, .08); transition: transform .1s, background-color 0.2s; }
+    .course:hover { transform: translateY(-2px); border-color: black; box-shadow: 0 4px 10px rgba(15, 23, 42, .15); background-color: lightblue; }
+    .course-info { max-width: 70%; }
+    .course-title { margin: 0 0 6px; font-size: 18px; font-weight: 700; color: #1d4ed8; }
+    .course-meta { margin: 0; color: #475569; font-size: 14px; }
+    .availability { font-weight: 700; padding: 5px 10px; border-radius: 999px; font-size: 13px; }
+    .available { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .coming { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .back { margin-top: 24px; display: inline-block; color: black; background: white; padding: 10px 14px; border-radius: 6px; border: 1px solid black; text-decoration: none; transition: background-color 0.2s; }
+    .back:hover { background-color: lightblue; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Course Catalog</h1>
+    <div class="courses">
+      <a class="course-link" target="_blank" rel="noopener" href="https://www.google.com/search?q=UI%2FUX+Design+fundamentals+videos&tbm=vid">
+        <div class="course">
+          <div class="course-info">
+            <p class="course-title">UI/UX Design Fundamentals</p>
+            <p class="course-meta">Category: UI/UX • Level: Beginner</p>
+          </div>
+          <span class="availability available">Available</span>
+        </div>
+      </a>
+      <a class="course-link" target="_blank" rel="noopener" href="https://www.google.com/search?q=Web+Development+Bootcamp+videos&tbm=vid">
+        <div class="course">
+          <div class="course-info">
+            <p class="course-title">Web Development Bootcamp</p>
+            <p class="course-meta">Category: Web Development • Level: Beginner to Intermediate</p>
+          </div>
+          <span class="availability available">Available</span>
+        </div>
+      </a>
+      <a class="course-link" target="_blank" rel="noopener" href="https://www.google.com/search?q=Advanced+CSS+and+Responsive+Design+videos&tbm=vid">
+        <div class="course">
+          <div class="course-info">
+            <p class="course-title">Advanced CSS and Responsive Design</p>
+            <p class="course-meta">Category: Front-end • Level: Intermediate</p>
+          </div>
+          <span class="availability available">Available</span>
+        </div>
+      </a>
+      <a class="course-link" target="_blank" rel="noopener" href="https://www.google.com/search?q=Full+Stack+Project+E-commerce+Site+videos&tbm=vid">
+        <div class="course">
+          <div class="course-info">
+            <p class="course-title">Full Stack Project: E-commerce Site</p>
+            <p class="course-meta">Category: Full Stack • Level: Advanced</p>
+          </div>
+          <span class="availability coming">Coming soon</span>
+        </div>
+      </a>
+      <a class="course-link" target="_blank" rel="noopener" href="https://www.google.com/search?q=Java+Programming+Essentials+videos&tbm=vid">
+        <div class="course">
+          <div class="course-info">
+            <p class="course-title">Java Programming Essentials</p>
+            <p class="course-meta">Category: Programming • Level: Beginner to Intermediate</p>
+          </div>
+          <span class="availability available">Available</span>
+        </div>
+      </a>
+      <a class="course-link" target="_blank" rel="noopener" href="https://www.google.com/search?q=Python+for+Data+Science+videos&tbm=vid">
+        <div class="course">
+          <div class="course-info">
+            <p class="course-title">Python for Data Science</p>
+            <p class="course-meta">Category: Programming • Level: Beginner to Intermediate</p>
+          </div>
+          <span class="availability available">Available</span>
+        </div>
+      </a>
+      <a class="course-link" target="_blank" rel="noopener" href="https://www.google.com/search?q=Cyber+Security+Foundations+videos&tbm=vid">
+        <div class="course">
+          <div class="course-info">
+            <p class="course-title">Cyber Security Foundations</p>
+            <p class="course-meta">Category: Security • Level: Intermediate</p>
+          </div>
+          <span class="availability available">Available</span>
+        </div>
+      </a>
+      <a class="course-link" target="_blank" rel="noopener" href="https://www.google.com/search?q=Machine+Learning+Basics+videos&tbm=vid">
+        <div class="course">
+          <div class="course-info">
+            <p class="course-title">Machine Learning Basics</p>
+            <p class="course-meta">Category: AI/ML • Level: Intermediate</p>
+          </div>
+          <span class="availability coming">Coming soon</span>
+        </div>
+      </a>
+    </div>
+    <a class="back" href="home.html">Back to Home</a>
+  </div>
+</body>
+</html>

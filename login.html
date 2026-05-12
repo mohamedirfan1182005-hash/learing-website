@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: lightblue;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .login-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 24px;
+      width: 320px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .login-card h1 { text-align: center; margin-bottom: 20px; }
+    .login-card label { display: block; margin: 12px 0 5px; }
+    .login-card input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .login-card button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 16px;
+      border: 1px solid black;
+      border-radius: 4px;
+      background:white;
+      color: black;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .login-card button:hover { background:lightblue;color:black; }
+    .error-message {
+      color: #dc2626;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+      font-size: 14px;
+    }
+    .password-error {
+      color: #dc2626;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+    .register-link {
+      text-align: center;
+      margin-top: 16px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+    .register-link a {
+      color: #1d4ed8;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+    .forgot-password {
+      text-align: right;
+      margin-top: 8px;
+    }
+    .forgot-password a {
+      color: #1d4ed8;
+      font-size: 14px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+    .password-wrapper {
+      position: relative;
+    }
+    .password-wrapper input {
+      padding-right: 40px !important;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      user-select: none;
+      color: #6b7280;
+    }
+    .background-title {
+      position: absolute;
+      top: 10%;
+      text-align: center;
+      font-size: 28px;
+      color: black;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-weight: bold;
+      padding: 0 20px;
+    }
+    .background-title:hover {
+      color: white;
+    }
+    .login-notification {
+      position: fixed;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      color:black;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .login-notification.show {
+      top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-notification" id="loginNotification">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    Login to learners.com Successful!
+  </div>
+  <div class="login-card">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <label for="username">User Name / Phone Number</label>
+      <input type="text" id="username" name="username" placeholder="Enter user name or phone number" autocomplete="off" required />
+      <label for="password">Password</label>
+      <div class="password-wrapper">
+        <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="new-password" required />
+        <span class="toggle-password" onclick="togglePassword('password')">
+          <svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+        </span>
+      </div>
+      <div class="forgot-password">
+        <a onclick="goToResetPassword()">Forgot password?</a>
+      </div>
+      <div class="password-error" id="passwordError">Enter strong password (letters & numbers)</div>
+      <div class="error-message" id="errorMessage">Invalid username or password</div>
+      <button type="submit">Login</button>
+    </form>
+    <div class="register-link">
+      Don't have an account? <a onclick="goToRegister()">Register here</a>
+    </div>
+  </div>
+
+  <script>
+    // Password validation function
+    function isStrongPassword(password) {
+      const hasLetters = /[a-zA-Z]/.test(password);
+      const hasNumbers = /[0-9]/.test(password);
+      return hasLetters && hasNumbers;
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const errorMessage = document.getElementById('errorMessage');
+      const passwordError = document.getElementById('passwordError');
+      
+      // Hide error messages first
+      errorMessage.style.display = 'none';
+      passwordError.style.display = 'none';
+      
+      // Validate password strength
+      if (!isStrongPassword(password)) {
+        passwordError.style.display = 'block';
+        return;
+      }
+      
+      // Validate input against localStorage
+      if (username && password) {
+        let users = JSON.parse(localStorage.getItem('users')) || {};
+        let user = users[username];
+
+        // Fallback to searching by phone number or email if not found by direct key
+        if (!user) {
+          for (const key in users) {
+            if (users[key].phone === username || users[key].email === username) {
+              user = users[key];
+              break;
+            }
+          }
+        }
+
+        if (user && user.password === password) {
+          // Set user as logged in
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('username', username);
+          localStorage.setItem('userData', JSON.stringify(user));
+          
+          // Show notification animation
+          const notification = document.getElementById('loginNotification');
+          notification.classList.add('show');
+          
+          setTimeout(() => {
+            // Redirect to dashboard
+            window.location.href = 'home.html';
+          }, 1500);
+        } else {
+          errorMessage.textContent = 'Invalid username/phone or password';
+          errorMessage.style.display = 'block';
+        }
+      } else {
+        errorMessage.textContent = 'Please enter both username/phone and password';
+        errorMessage.style.display = 'block';
+      }
+    });
+
+    function goToRegister() {
+      window.location.href = 'register page.html';
+    }
+
+    function goToResetPassword() {
+      window.location.href = 'reset password.html';
+    }
+
+    function togglePassword(inputId) {
+      const input = document.getElementById(inputId);
+      const iconSpan = input.nextElementSibling;
+      const eyeSlashSvg = '<svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+      const eyeSvg = '<svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+
+      if (input.type === 'password') {
+        input.type = 'text';
+        iconSpan.innerHTML = eyeSvg;
+      } else {
+        input.type = 'password';
+        iconSpan.innerHTML = eyeSlashSvg;
+      }
+    }
+  </script>
+</body>
+</html>

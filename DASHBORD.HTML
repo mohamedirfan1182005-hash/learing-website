@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: lightblue;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      background: #1f2937;
+      color: #f3f4f6;
+    }
+    .navbar {
+      background: lightblue;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: black;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .dark-mode .navbar {
+      background: #111827;
+      color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      border-bottom: 1px solid #374151;
+    }
+    .navbar h2 { font-size: 24px; }
+    .navbar-right {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    .icons {
+      display: flex;
+      gap: 16px;
+      font-size: 24px;
+    }
+    .icon-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-size: 24px;
+      transition: transform 0.2s;
+    }
+    .icon-btn:hover { transform: scale(1.2); }
+    .hamburger-menu {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .hamburger-btn {
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: black;
+      display: flex;
+      align-items: center;
+      transition: transform 0.2s;
+    }
+    .hamburger-btn:hover {
+      color: black;
+      transform: scale(1.1);
+    }
+    .dark-mode .hamburger-btn {
+      color: white;
+    }
+    .nav-buttons {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      flex-direction: column;
+      gap: 0;
+      overflow: hidden;
+      z-index: 100;
+      min-width: 150px;
+      margin-top: 10px;
+    }
+    .dark-mode .nav-buttons {
+      background: #374151;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .nav-buttons.show {
+      display: flex;
+    }
+    .nav-buttons button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 500;
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      color: #1f2937;
+      transition: background 0.2s;
+    }
+    .nav-buttons button:hover {
+      background:lightblue;
+    }
+    .dark-mode .nav-buttons button {
+      color: #f3f4f6;
+    }
+    .dark-mode .nav-buttons button:hover {
+      background: #4b5563;
+    }
+
+    /* Settings Modal */
+    .settings-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .settings-modal.show {
+      display: flex;
+    }
+    .settings-content {
+      background: #fff;
+      padding: 32px;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .settings-content h2 { margin-bottom: 24px; color: #1f2937; }
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .setting-item:last-child { border-bottom: none; }
+    .close-btn {
+      background: #6b7280;
+      color: #fff;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .close-btn:hover { background: #4b5563; }
+
+    .container {
+      max-width: 900px;
+      margin: 32px auto;
+      padding: 0 16px;
+    }
+    .profile-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 32px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .dark-mode .profile-card {
+      background: #374151;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      color: #f3f4f6;
+    }
+    .profile-card h1 {
+      margin-bottom: 24px;
+      color: #1f2937;
+      border-bottom: 2px solid lightblue;
+      padding-bottom: 12px;
+    }
+    .profile-picture-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .profile-picture {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      border: 3px solid lightblue;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .profile-picture:hover {
+      transform: scale(1.05);
+    }
+    .profile-picture img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .upload-picture-btn {
+      padding: 8px 16px;
+      border: 1px solid black;
+      border-radius: 4px;
+      background: #fff;
+      color: black;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .upload-picture-btn:hover {
+      background: lightblue;
+      color: black;
+    }
+    .remove-picture-btn {
+      padding: 8px 16px;
+      border: 1px solid black;
+      border-radius: 4px;
+      background: #fff;
+      color: black;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+      margin-left: 8px;
+    }
+    .remove-picture-btn:hover {
+      background: lightblue;
+      color: black;
+    }
+    .button-group {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+    #profilePictureInput {
+      display: none;
+    }
+    .profile-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .info-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .info-item label {
+      font-weight: bold;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+    .info-item span {
+      color: #6b7280;
+      padding: 8px;
+      background: #f9fafb;
+      border-radius: 4px;
+    }
+    @media (max-width: 600px) {
+      .profile-info {
+        grid-template-columns: 1fr;
+      }
+      .navbar {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .navbar-right {
+        width: 100%;
+        justify-content: center;
+      }
+      .nav-buttons {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+    .dark-mode .settings-content {
+      background: #374151;
+      color: #f3f4f6;
+    }
+    .dark-mode .settings-content h2 {
+      color: #e5e7eb;
+    }
+    .dark-mode .setting-item {
+      border-bottom-color: #4b5563;
+      color: #e5e7eb;
+    }
+    .dark-mode .close-btn {
+      background: #4b5563;
+    }
+    .dark-mode .close-btn:hover {
+      background: #6b7280;
+    }
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #16a34a;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 1001;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    .notification.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .dark-mode .notification {
+      background: #059669;
+    }
+    .dark-mode .info-item label {
+      color: #e5e7eb;
+    }
+    .dark-mode .info-item span {
+      color: #e5e7eb;
+      background: #4b5563;
+    }
+    .dark-mode .profile-card h1 {
+      color: #e5e7eb;
+      border-bottom-color: #60a5fa;
+    }
+    .settings-modal.show {
+      display: flex;
+    }
+    .btn-delete-account {
+      background: white;
+      color: black;
+      border: 1px solid black;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn-delete-account:hover,
+    .btn-delete-account:active {
+      background-color: red !important;
+      color: white !important;
+      border-color: red !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Notification -->
+  <div class="notification" id="notification"></div>
+
+  <!-- Settings Modal -->
+  <div class="settings-modal" id="settingsModal">
+    <div class="settings-content">
+      <h2>Settings</h2>
+      <div class="setting-item">
+        <span>Dark Mode</span>
+        <input type="checkbox" id="darkModeToggle" onchange="showNotification('Dark Mode', this.checked); toggleDarkMode()" />
+      </div>
+      <div class="setting-item">
+        <span>Notifications</span>
+        <input type="checkbox" id="notificationsToggle" checked onchange="toggleNotifications()" />
+      </div>
+      <div class="setting-item">
+        <span>Email Alerts</span>
+        <input type="checkbox" checked onchange="showNotification('Email Alerts', this.checked)" />
+      </div>
+      <div class="setting-item" style="border-bottom: none;">
+        <span>Account Actions</span>
+        <button onclick="deleteAccount()" class="btn-delete-account">Delete Account</button>
+      </div>
+      <button class="close-btn" onclick="closeSettings()">Close</button>
+    </div>
+  </div>
+
+  <div class="navbar">
+    <h2>Dashboard:</h2>
+    <div class="navbar-right">
+      <div class="icons">
+        <button class="icon-btn" title="Profile" onclick="openProfile()">👤</button>
+        <button class="icon-btn" title="Settings" onclick="openSettings()">⚙️</button>
+      </div>
+      <div class="hamburger-menu">
+        <button class="hamburger-btn" onclick="toggleNavMenu()">☰</button>
+        <div class="nav-buttons" id="navMenu">
+          <button class="btn-home" onclick="goToHome()">Home</button>
+          <button class="btn-login" onclick="goToLogin()">Login</button>
+          <button class="btn-logout" onclick="logout()">Logout</button>
+          <button class="btn-register" onclick="goToRegister()">Register</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="profile-card">
+      <h1>Profile</h1>
+      
+      <div class="profile-picture-section">
+        <div class="profile-picture" id="profilePictureDisplay" onclick="triggerFileUpload()">
+          <span id="pictureIcon">📷</span>
+        </div>
+        <div class="button-group">
+          <button class="upload-picture-btn" onclick="triggerFileUpload()">Upload Photo</button>
+          <button class="remove-picture-btn" onclick="removeProfilePicture()">Remove Photo</button>
+        </div>
+        <input type="file" id="profilePictureInput" accept="image/*" onchange="handleProfilePictureUpload(event)" />
+      </div>
+
+      <div class="profile-info">
+        <div class="info-item">
+          <label>Name</label>
+          <span id="displayName">Name</span>
+        </div>
+        <div class="info-item">
+          <label>Email</label>
+          <span id="displayEmail">@email id</span>
+        </div>
+        <div class="info-item">
+          <label>Phone Number</label>
+          <span id="displayPhone">+91--------</span>
+        </div>
+        <div class="info-item">
+          <label>Date of Birth</label>
+          <span id="displayDOB">DOB</span>
+        </div>
+        <div class="info-item">
+          <label>Age</label>
+          <span id="displayAge">Age</span>
+        </div>
+        <div class="info-item">
+          <label>College Name</label>
+          <span id="displayCollegeName">College Name</span>
+        </div>
+        <div class="info-item">
+          <label>Department</label>
+          <span id="displayDepartment">Department Name</span>
+        </div>
+        <div class="info-item">
+          <label>Year of Study</label>
+          <span id="displayYear">Year</span>
+        </div>
+        <div class="info-item">
+          <label>Interested Sector</label>
+          <span id="displayInterestedSector">Sector</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Check if user is logged in
+    window.addEventListener('load', function() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
+      if (!isLoggedIn) {
+        alert("Please login first!");
+        window.location.href = "login.html";
+      } else {
+        // Load user data if available
+        loadUserData();
+        // Load dark mode preference
+        loadDarkModePreference();
+        // Load notifications preference
+        loadNotificationsPreference();
+      }
+    });
+
+    function loadUserData() {
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const user = JSON.parse(userData);
+        document.getElementById('displayName').textContent = user.name || 'Name';
+        document.getElementById('displayEmail').textContent = user.email || '@email id';
+        document.getElementById('displayPhone').textContent = user.phone || '+91--------';
+        document.getElementById('displayDOB').textContent = user.dob || 'DOB';
+        document.getElementById('displayAge').textContent = user.age || 'Age';
+        document.getElementById('displayCollegeName').textContent = user.collegeName || 'College Name';
+        document.getElementById('displayDepartment').textContent = user.department || 'Department Name';
+        document.getElementById('displayYear').textContent = user.year || 'Year';
+        document.getElementById('displayInterestedSector').textContent = user.interestedSector || 'Sector';
+      }
+
+      // Load profile picture if available
+      const profilePicture = localStorage.getItem('profilePicture');
+      if (profilePicture) {
+        const profileDisplay = document.getElementById('profilePictureDisplay');
+        const pictureIcon = document.getElementById('pictureIcon');
+        if (pictureIcon) {
+          pictureIcon.remove();
+        }
+        const img = document.createElement('img');
+        img.src = profilePicture;
+        profileDisplay.appendChild(img);
+      }
+    }
+
+    function triggerFileUpload() {
+      document.getElementById('profilePictureInput').click();
+    }
+
+    function handleProfilePictureUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const profilePictureData = e.target.result;
+          localStorage.setItem('profilePicture', profilePictureData);
+
+          // Display the uploaded picture
+          const profileDisplay = document.getElementById('profilePictureDisplay');
+          const pictureIcon = document.getElementById('pictureIcon');
+          if (pictureIcon) {
+            pictureIcon.remove();
+          }
+
+          // Clear existing image
+          profileDisplay.innerHTML = '';
+
+          const img = document.createElement('img');
+          img.src = profilePictureData;
+          profileDisplay.appendChild(img);
+
+          alert('Profile picture uploaded successfully!');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function removeProfilePicture() {
+      const confirm_remove = confirm('Are you sure you want to remove your profile picture?');
+      if (confirm_remove) {
+        localStorage.removeItem('profilePicture');
+        
+        const profileDisplay = document.getElementById('profilePictureDisplay');
+        profileDisplay.innerHTML = '<span id="pictureIcon">📷</span>';
+        
+        alert('Profile picture removed successfully!');
+      }
+    }
+
+    function toggleDarkMode() {
+      const isDarkMode = document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', isDarkMode);
+      document.getElementById('darkModeToggle').checked = isDarkMode;
+    }
+
+    function loadDarkModePreference() {
+      const isDarkMode = localStorage.getItem('darkMode') === 'true';
+      if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        document.getElementById('darkModeToggle').checked = true;
+      }
+    }
+
+    function toggleNotifications() {
+      const isEnabled = document.getElementById('notificationsToggle').checked;
+      localStorage.setItem('notificationsEnabled', isEnabled);
+      showNotification('Notifications', isEnabled);
+    }
+
+    function loadNotificationsPreference() {
+      const isEnabled = localStorage.getItem('notificationsEnabled');
+      if (isEnabled === 'false') {
+        document.getElementById('notificationsToggle').checked = false;
+      } else {
+        document.getElementById('notificationsToggle').checked = true;
+      }
+    }
+
+    function navWithNotification(url, message) {
+      const notificationsEnabled = localStorage.getItem('notificationsEnabled') !== 'false';
+      if (notificationsEnabled) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => {
+          window.location.href = url;
+        }, 1000);
+      } else {
+        window.location.href = url;
+      }
+    }
+
+    function showNotification(optionName, isChecked) {
+      const notification = document.getElementById('notification');
+      const status = isChecked ? 'on' : 'off';
+      notification.textContent = `${optionName} ${status}`;
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000); // Hide after 3 seconds
+    }
+
+    function logout() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('username');
+      localStorage.removeItem('userData');
+      localStorage.removeItem('student_name');
+      localStorage.removeItem('student_year');
+      localStorage.removeItem('student_branch');
+      localStorage.removeItem('student_college');
+      localStorage.removeItem('profilePicture');
+      localStorage.removeItem('recentVisits');
+      alert("You have been logged out!");
+      navWithNotification("login.html", "Navigating to Login...");
+    }
+
+    function deleteAccount() {
+      if(confirm('Are you sure you want to sign out and delete your account? This action cannot be undone.')) {
+        const username = localStorage.getItem('username');
+        let users = JSON.parse(localStorage.getItem('users')) || {};
+        
+        // Remove the user from the registered users list completely
+        if (users[username]) {
+          delete users[username];
+        } else {
+          for (const key in users) {
+             if (users[key].email === username || users[key].phone === username || key === username) {
+                delete users[key];
+                break;
+             }
+          }
+        }
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        // Clear all session and personal data
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('username');
+        localStorage.removeItem('userData');
+        localStorage.removeItem('profilePicture');
+        localStorage.removeItem('student_name');
+        localStorage.removeItem('student_year');
+        localStorage.removeItem('student_branch');
+        localStorage.removeItem('student_college');
+        localStorage.removeItem('recentVisits');
+        localStorage.removeItem('darkMode');
+        localStorage.removeItem('notificationsEnabled');
+        
+        alert("Your account has been deleted successfully.");
+        window.location.href = "login.html";
+      }
+    }
+
+    function goToLogin() {
+      navWithNotification("login.html", "Navigating to Login...");
+    }
+
+    function goToRegister() {
+      navWithNotification("register page.html", "Navigating to Register...");
+    }
+
+    function goToHome() {
+      navWithNotification("home.html", "Navigating to Home...");
+    }
+
+    function openProfile() {
+      alert("Profile page will open here");
+    }
+
+    function openSettings() {
+      document.getElementById('settingsModal').classList.add('show');
+    }
+
+    function closeSettings() {
+      document.getElementById('settingsModal').classList.remove('show');
+    }
+
+    function toggleNavMenu() {
+      document.getElementById('navMenu').classList.toggle('show');
+    }
+
+    // Close settings modal or nav menu when clicking outside
+    window.onclick = function(event) {
+      if (!event.target.closest('.hamburger-menu')) {
+        const navMenu = document.getElementById('navMenu');
+        if (navMenu && navMenu.classList.contains('show')) {
+          navMenu.classList.remove('show');
+        }
+      }
+
+      const settingsModal = document.getElementById('settingsModal');
+      if (event.target === settingsModal) {
+        settingsModal.classList.remove('show');
+      }
+    }
+  </script>
+</body>
+</html>

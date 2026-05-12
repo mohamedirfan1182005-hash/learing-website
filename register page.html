@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: lightblue;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .register-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 32px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
+
+    .register-card h1 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #1f2937;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      color: black;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid black;
+      border-radius: 4px;
+      font-size: 14px;
+      background-color: white;
+    }
+    .form-group select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='lightblue' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 16px;
+      padding-right: 30px;
+      color:black;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: black; 
+      box-shadow: 0 0 5px black;
+    }
+    
+    .form-group input:hover,
+    .form-group select:hover {
+      border-color: black; 
+    }
+
+    .phone-input-group {
+      display: flex;
+      gap: 8px;
+    }
+    .phone-input-group select {
+      width: 110px;
+      flex-shrink: 0;
+      cursor: pointer;
+      color: black;
+
+    }
+    .phone-input-group select:hover {
+      border-color: lightblue; 
+    }
+    .phone-input-group input {
+      flex-grow: 1;
+    }
+
+    .form-group input.error {
+      border-color: #dc2626;
+      background-color: #fef2f2;
+    }
+
+    .input-error-message {
+      color: #dc2626;
+      font-size: 12px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .input-error-message.show {
+      display: block;
+    }
+
+    .register-card button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 4px;
+      background: lightblue;
+      color: black;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .register-card button:hover {
+      background: #15803d;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 16px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: darkblue;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: #dc2626;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+      font-size: 14px;
+    }
+
+    .success-message {
+      color: #16a34a;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+      font-size: 14px;
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-wrapper input {
+      padding-right: 40px !important;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      user-select: none;
+      color: #6b7280;
+    }
+
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .register-card {
+        padding: 20px;
+      }
+    }
+
+    .background-title {
+      position: absolute;
+      top: 10%;
+      text-align: center;
+      font-size: 28px;
+      color: black;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-weight: bold;
+      padding: 0 20px;
+    }
+
+    .back-icon {
+      position: left;
+      top: 24px;
+      left: 24px;
+      color: #6b7280;
+      cursor: pointer;
+      display: flex;
+      align-items: left;
+      justify-content: left;
+      transition: color 0.2s;
+    }
+
+    .back-icon:hover {
+      color: #1f2937;
+    }
+    
+    .success-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .success-overlay.show {
+      visibility: visible;
+      opacity: 1;
+    }
+    .success-modal {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transform: scale(0.8);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .success-overlay.show .success-modal {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .checkmark-circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: #16a34a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      transform: scale(0);
+    }
+    .success-overlay.show .checkmark-circle {
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+    .checkmark {
+      color: white;
+      font-size: 36px;
+      font-weight: bold;
+    }
+    .success-modal h2 {
+      color: #1f2937;
+      margin-bottom: 8px;
+    }
+    .success-modal p {
+      color: #6b7280;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Success Animation Overlay -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-modal">
+      <div class="checkmark-circle">
+        <span class="checkmark">&#10003;</span>
+      </div>
+      <h2>Success!</h2>
+      <p>Registration successful!...</p>
+    </div>
+  </div>
+
+  <div class="register-card">
+    <a href="login.html" class="back-icon" title="Back to Login">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+    </a>
+    <h1>Register</h1>
+    <form id="registerForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="firstName" placeholder="Name" oninput="validateNameInput(this)"
+            required />
+          <div class="input-error-message" id="firstNameError">Only letters are allowed</div>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="lastName" placeholder="last name" oninput="validateNameInput(this)"
+            required />
+          <div class="input-error-message" id="lastNameError">Only letters are allowed</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="@email id" required />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <div class="phone-input-group">
+          <select id="countryCode" name="countryCode" required>
+            <option value="+1">+1 (US)</option>
+            <option value="+44">+44 (UK)</option>
+            <option value="+61">+61 (AUS)</option>
+            <option value="+81">+81 (JPN)</option>
+            <option value="+86">+86 (CN)</option>
+            <option value="+91" selected>+91 (IND)</option>
+            <option value="+971">+971 (UAE)</option>
+          </select>
+          <input type="tel" id="phone" name="phone" placeholder="----------" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" required />
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input type="number" id="age" name="age" placeholder="age" min="1" max="120" required />
+      </div>
+
+      <div class="form-group">
+        <label for="collegeName">College Name</label>
+        <input type="text" id="collegeName" name="collegeName" placeholder="Enter College Name" required />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="department">Department of Studying</label>
+          <select id="department" name="department" required>
+            <option value="" disabled selected>Select Department</option>
+            <option value="Computer Science and Engineering">Computer Science and Engineering</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="Electronics and Communication">Electronics and Communication</option>
+            <option value="Electrical Engineering">Electrical Engineering</option>
+            <option value="Mechanical Engineering">Mechanical Engineering</option>
+            <option value="Civil Engineering">Civil Engineering</option>
+            <option value="Aerospace Engineering">Aerospace Engineering</option>
+            <option value="Chemical Engineering">Chemical Engineering</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="year">Year of Study</label>
+          <select id="year" name="year" required>
+            <option value="" disabled selected>Select Year</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="interestedSector">Interested Sector</label>
+        <select id="interestedSector" name="interestedSector" required>
+          <option value="" disabled selected>Select Sector</option>
+          <option value="Software Engineering">Software Engineering</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Mobile App Development">Mobile App Development</option>
+          <option value="Artificial Intelligence / ML">Artificial Intelligence / ML</option>
+          <option value="Data Science / Analytics">Data Science / Analytics</option>
+          <option value="Cybersecurity">Cybersecurity</option>
+          <option value="Cloud Computing">Cloud Computing</option>
+          <option value="Game Development">Game Development</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="password" name="password" placeholder="Enter password" required />
+          <span class="toggle-password" onclick="togglePassword('password')">
+            <svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+              viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path
+                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+              </path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required />
+          <span class="toggle-password" onclick="togglePassword('confirmPassword')">
+            <svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+              viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path
+                d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+              </path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <div class="error-message" id="errorMessage"></div>
+      <div class="success-message" id="successMessage">Registration successful! Redirecting...</div>
+
+      <button type="submit">Register</button>
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a onclick="goToLogin()">Login here</a>
+    </div>
+  </div>
+
+  <script>
+    function validateNameInput(input) {
+      const nameRegex = /^[a-zA-Z\s]*$/; // Only letters and spaces
+      const errorElement = input.id === 'firstName' ? document.getElementById('firstNameError') : document.getElementById('lastNameError');
+
+      if (input.value && !nameRegex.test(input.value)) {
+        // Invalid character entered - remove it
+        input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+        input.classList.add('error');
+        errorElement.classList.add('show');
+      } else if (input.value === '') {
+        input.classList.remove('error');
+        errorElement.classList.remove('show');
+      } else {
+        input.classList.remove('error');
+        errorElement.classList.remove('show');
+      }
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const email = document.getElementById('email').value;
+      const countryCode = document.getElementById('countryCode').value;
+      const phoneNumber = document.getElementById('phone').value;
+      const phone = countryCode + ' ' + phoneNumber;
+      const dob = document.getElementById('dob').value;
+      const age = document.getElementById('age').value;
+      const collegeName = document.getElementById('collegeName').value;
+      const department = document.getElementById('department').value;
+      const year = document.getElementById('year').value;
+      const interestedSector = document.getElementById('interestedSector').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const errorMessage = document.getElementById('errorMessage');
+      const successMessage = document.getElementById('successMessage');
+
+      // Validate name fields
+      const nameRegex = /^[a-zA-Z\s]*$/;
+      if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+        errorMessage.textContent = 'Name fields should contain only letters';
+        errorMessage.style.display = 'block';
+        successMessage.style.display = 'none';
+        return;
+      }
+
+      // Validate age
+      if (!age || age < 1 || age > 120) {
+        errorMessage.textContent = 'Please enter a valid age (1-120)';
+        errorMessage.style.display = 'block';
+        successMessage.style.display = 'none';
+        return;
+      }
+
+      // Validation
+      if (!firstName || !lastName || !email || !phoneNumber || !dob || !collegeName || !department || !year || !interestedSector || !password) {
+        errorMessage.textContent = 'All fields are required';
+        errorMessage.style.display = 'block';
+        successMessage.style.display = 'none';
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        errorMessage.textContent = 'Passwords do not match';
+        errorMessage.style.display = 'block';
+        successMessage.style.display = 'none';
+        return;
+      }
+
+      if (password.length < 6) {
+        errorMessage.textContent = 'Password must be at least 6 characters';
+        errorMessage.style.display = 'block';
+        successMessage.style.display = 'none';
+        return;
+      }
+
+      // Format date
+      const dateObj = new Date(dob);
+      const formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      // Store user data in localStorage
+      const userData = {
+        name: firstName + ' ' + lastName,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        dob: formattedDate,
+        age: age,
+        collegeName: collegeName,
+        department: department,
+        year: year,
+        interestedSector: interestedSector,
+        password: password
+      };
+
+      let users = JSON.parse(localStorage.getItem('users')) || {};
+      users[email] = userData;
+      localStorage.setItem('users', JSON.stringify(users));
+
+      localStorage.setItem('userData', JSON.stringify(userData));
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('username', email);
+
+      // Show success animation and redirect
+      errorMessage.style.display = 'none';
+      if (successMessage) successMessage.style.display = 'none';
+
+      document.getElementById('successOverlay').classList.add('show');
+
+      setTimeout(function () {
+        window.location.href = 'home.html';
+      }, 2500);
+    });
+
+    function goToLogin() {
+      window.location.href = 'login.html';
+    }
+
+    function togglePassword(inputId) {
+      const input = document.getElementById(inputId);
+      const iconSpan = input.nextElementSibling;
+      const eyeSlashSvg = '<svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+      const eyeSvg = '<svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+
+      if (input.type === 'password') {
+        input.type = 'text';
+        iconSpan.innerHTML = eyeSvg;
+      } else {
+        input.type = 'password';
+        iconSpan.innerHTML = eyeSlashSvg;
+      }
+    }
+  </script>
+</body>
+
+</html>

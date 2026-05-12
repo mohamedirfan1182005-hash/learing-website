@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><b>Home</b></title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: lightblue;
+      color: black;
+    }
+    .topbar {
+      background: lightblue;
+      color: black;
+      padding: 4px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid black;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .topbar-right {
+      display: flex;
+      gap: 12px;
+    }
+    .topbar a {
+      color: black;
+      text-decoration: none;
+      background: white;
+      border: 1px solid black;
+      border-radius: 4px;
+      padding: 8px 12px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .topbar a:hover {
+      background: lightblue;
+      box-shadow: 0 4px 8px rgba(21, 20, 20, 0.2);
+    }
+    .section-wrap {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+    .intro { margin-bottom: 20px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+      gap: 16px;
+    }
+    .card {
+      background: white;
+      border: 2px solid black;
+      border-radius: 10px;
+      padding: 18px;
+      box-shadow: 0 10px 20px rgba(15,23,42,.08);
+      min-height: 180px;
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(15,23,42,.15);
+      border-color: #1e40af;
+      background: lightblue;
+    }
+    .card:active {
+      transform: translateY(-2px);
+      background: #87cefa;
+    }
+    .card h3 { margin-bottom: 10px; }
+    .card p { color: #475569; }
+    
+    .card-icon {
+      margin-bottom: 12px;
+      color: #1e40af;
+      display: block;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #16a34a;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 1001;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.2s ease;
+      pointer-events: none;
+    }
+    .notification.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="notification" id="notification"></div>
+
+  <header class="topbar">
+    <h1>Home</h1>
+    <div class="topbar-right">
+      <a onclick="navWithNotification('DASHBORD.HTML', 'Navigating to Dashboard...')">👤</a>
+    </div>
+  </header>
+  <main class="section-wrap">
+    <section class="intro" id="recentSection" style="display: none; margin-bottom: 40px;">
+      <p><b><u>Recently Visited:</u></b></p>
+      <div class="grid" id="recentGrid"></div>
+    </section>
+
+    <section class="intro">
+      <p><b><u>Choose the sector to continue:</u></b></p>
+    </section>
+    <div class="grid">
+      <article class="card" onclick="navWithNotification('student.html', 'Navigating to Student Data...')" style="cursor:pointer;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+          <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+        </svg>
+        <h3>Student</h3>
+        <p><b>Here be the details of students.</b></p>
+      </article>
+      <article class="card" onclick="navWithNotification('courses.html', 'Navigating to Courses...')" style="cursor:pointer;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+        </svg>
+        <h3>Courses</h3>
+        <p><b>course information and details.</b></p>
+      </article>
+      <article class="card" onclick="navWithNotification('learning-platforms.html', 'Navigating to Learning Platforms...')" style="cursor:pointer;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        <h3>Learning Platforms</h3>
+        <p><b>Online learning platforms and resources.</b></p>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    const cardData = {
+      'student.html': {
+        title: 'Student',
+        desc: '<b>Here be the details of students.</b>',
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>'
+      },
+      'courses.html': {
+        title: 'Courses',
+        desc: '<b>course information and details.</b>',
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>'
+      },
+      'learning-platforms.html': {
+        title: 'Learning Platforms',
+        desc: '<b>Online learning platforms and resources.</b>',
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>'
+      }
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      let recent = JSON.parse(localStorage.getItem('recentVisits')) || [];
+      const fiveMinsAgo = Date.now() - (5 * 60 * 1000);
+      
+      // Keep only entries from the last 5 minutes
+      const validRecent = recent.filter(item => item && item.time && item.time > fiveMinsAgo);
+      if (validRecent.length !== recent.length) {
+        localStorage.setItem('recentVisits', JSON.stringify(validRecent));
+      }
+
+      if (validRecent.length > 0) {
+        document.getElementById('recentSection').style.display = 'block';
+        const recentGrid = document.getElementById('recentGrid');
+        validRecent.forEach(item => {
+          const url = item.url;
+          if (cardData[url]) {
+            const data = cardData[url];
+            const article = document.createElement('article');
+            article.className = 'card';
+            article.style.cursor = 'pointer';
+            article.onclick = () => navWithNotification(url, 'Navigating to ' + data.title + '...');
+            article.innerHTML = data.icon + '<h3>' + data.title + '</h3><p>' + data.desc + '</p>';
+            recentGrid.appendChild(article);
+          }
+        });
+      }
+    });
+
+    function navWithNotification(url, message) {
+      if (cardData[url]) {
+        let recent = JSON.parse(localStorage.getItem('recentVisits')) || [];
+        const fiveMinsAgo = Date.now() - (5 * 60 * 1000);
+        
+        // Filter out expired items and the current url to avoid duplicates
+        recent = recent.filter(item => item && item.time && item.time > fiveMinsAgo && item.url !== url);
+        recent.unshift({ url: url, time: Date.now() });
+        if (recent.length > 5) recent.pop();
+        localStorage.setItem('recentVisits', JSON.stringify(recent));
+      }
+
+      // Check if notifications are enabled in settings
+      const notificationsEnabled = localStorage.getItem('notificationsEnabled') !== 'false';
+      
+      if (notificationsEnabled) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.classList.add('show');
+        
+        // Wait 1 second before navigating
+        setTimeout(() => {
+          window.location.href = url;
+        }, 1000);
+      } else {
+        // Navigate immediately
+        window.location.href = url;
+      }
+    }
+  </script>
+</body>
+</html>

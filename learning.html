@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courses</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f5f7fb; color: #1f2937; }
+    .container { max-width: 900px; margin: 36px auto; padding: 0 20px; }
+    h1 { color: #1d4ed8; }
+    .resource-list { margin-top: 24px; display: grid; gap: 14px; }
+    .resource-card { background: #fff; border: 1px solid black; border-radius: 8px; padding: 16px; box-shadow: 0 2px 8px rgba(15,23,42,.08); transition: background-color 0.2s; }
+    .resource-card:hover { background-color: lightblue; }
+    .resource-card a { color: #1d4ed8; font-weight: 600; text-decoration: none; }
+    .resource-card p { margin: 8px 0 0; color: #475569; }
+    .back { display: inline-block; margin-top: 20px; padding: 10px 14px; background: #2563eb; color: #fff; text-decoration: none; border-radius: 6px; border: 1px solid black; transition: background-color 0.2s, color 0.2s; }
+    .back:hover { background-color: lightblue; color: #1f2937; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Online Learning Resources</h1>
+    <div class="resource-list">
+      <div class="resource-card">
+        <a href="https://www.w3schools.com" target="_blank" rel="noopener">W3Schools</a>
+        <p>HTML, CSS, JavaScript, Python, SQL, and more tutorials for beginners.</p>
+      </div>
+      <div class="resource-card">
+        <a href="https://www.freecodecamp.org" target="_blank" rel="noopener">freeCodeCamp</a>
+        <p>Interactive coding lessons + projects and certificates in web development.</p>
+      </div>
+      <div class="resource-card">
+        <a href="https://www.codecademy.com" target="_blank" rel="noopener">Codecademy</a>
+        <p>Hands-on courses for web, data, and programming with a learning path.</p>
+      </div>
+      <div class="resource-card">
+        <a href="https://www.khanacademy.org/computing/computer-programming" target="_blank" rel="noopener">Khan Academy - Computer Programming</a>
+        <p>Free tutorials on JavaScript, HTML/CSS, and introductory computer science.</p>
+      </div>
+      <div class="resource-card">
+        <a href="https://www.coursera.org" target="_blank" rel="noopener">Coursera</a>
+        <p>University-level courses on web development, software engineering, and more.</p>
+      </div>
+    </div>
+    <a class="back" href="home.html">Back to Home</a>
+  </div>
+</body>
+</html>

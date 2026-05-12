@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><b>Student Details</b></title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: lightblue; color: #1f2937; }
+    .card { max-width: 500px; margin: 40px auto; background: #fff; border-radius: 8px; padding: 24px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+    .card h1 { margin-bottom: 18px; font-size: 26px; color: black; }
+    .field { margin-bottom: 14px; }
+    .label { font-weight: 700; color: #334155; margin-bottom: 4px; }
+    .value { border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; background: #f8fafc; color: #0f172a; }
+    .value input { width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; font-size: 14px; }
+    .btn { display: inline-block; margin-top: 20px; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: black; background:white; border: 1px solid black; cursor: pointer; }
+    .btn:hover { background: lightblue; color: black; }
+    .btn-secondary { background: white; color: black; }
+    .btn-secondary:hover { background: lightblue; color: black; }
+    .actions { display: flex; gap: 10px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Student Information</h1>
+
+    <div class="field">
+      <div class="label">Name</div>
+      <div class="value"><span id="nameText">Name of the student</span><input id="nameInput" type="text" value="" style="display:none;" /></div>
+    </div>
+
+    <div class="field">
+      <div class="label">Year of Studying</div>
+      <div class="value"><span id="yearText">Year of studying</span><input id="yearInput" type="text" value="" style="display:none;" /></div>
+    </div>
+
+    <div class="field">
+      <div class="label">Branch</div>
+      <div class="value"><span id="branchText">Branch name</span><input id="branchInput" type="text" value="" style="display:none;" /></div>
+    </div>
+
+    <div class="field">
+      <div class="label">College Name</div>
+      <div class="value"><span id="collegeText">College name</span><input id="collegeInput" type="text" value="" style="display:none;" /></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="editBtn" onclick="toggleEdit(true)">Edit</button>
+      <button class="btn btn-secondary" id="saveBtn" onclick="saveChanges()" style="display:none;">Save</button>
+      <button class="btn btn-secondary" id="cancelBtn" onclick="toggleEdit(false)" style="display:none;">Cancel</button>
+      <a class="btn" href="home.html">Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    // Load details from localStorage when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadDetails();
+    });
+
+    function loadDetails() {
+      const fields = ['name', 'year', 'branch', 'college'];
+      fields.forEach(id => {
+        const savedValue = localStorage.getItem('student_' + id);
+        if (savedValue) {
+          document.getElementById(id + 'Text').textContent = savedValue;
+          document.getElementById(id + 'Input').value = savedValue;
+        }
+      });
+    }
+
+    function toggleEdit(enable) {
+      const textIds = ['name','year','branch','college'];
+      textIds.forEach(id => {
+        document.getElementById(id + 'Text').style.display = enable ? 'none' : 'block';
+        document.getElementById(id + 'Input').style.display = enable ? 'block' : 'none';
+      });
+      document.getElementById('editBtn').style.display = enable ? 'none' : 'inline-block';
+      document.getElementById('saveBtn').style.display = enable ? 'inline-block' : 'none';
+      document.getElementById('cancelBtn').style.display = enable ? 'inline-block' : 'none';
+    }
+
+    function saveChanges() {
+      const fields = [
+        {id:'name', label:'Name'},
+        {id:'year', label:'Year of Studying'},
+        {id:'branch', label:'Branch'},
+        {id:'college', label:'College'}
+      ];
+      fields.forEach(f => {
+        const val = document.getElementById(f.id + 'Input').value.trim() || 'N/A';
+        document.getElementById(f.id + 'Text').textContent = val;
+        // Save to localStorage
+        localStorage.setItem('student_' + f.id, val);
+      });
+      toggleEdit(false);
+    }
+  </script>
+</body>
+</html>
